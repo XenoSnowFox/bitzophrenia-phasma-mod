@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{0C63CEE9-7D6B-452C-9DAB-F7DF0EAD6159}") = "Bitzophrenia", "BitzophreniaPhasmaMod.csproj", "{B792F3AF-2317-4090-A5A9-6C4F6BA9AFB1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B792F3AF-2317-4090-A5A9-6C4F6BA9AFB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B792F3AF-2317-4090-A5A9-6C4F6BA9AFB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B792F3AF-2317-4090-A5A9-6C4F6BA9AFB1}.Debug|x64.ActiveCfg = Debug|x64
+		{B792F3AF-2317-4090-A5A9-6C4F6BA9AFB1}.Debug|x64.Build.0 = Debug|x64
+		{B792F3AF-2317-4090-A5A9-6C4F6BA9AFB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B792F3AF-2317-4090-A5A9-6C4F6BA9AFB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B792F3AF-2317-4090-A5A9-6C4F6BA9AFB1}.Release|x64.ActiveCfg = Release|x64
+		{B792F3AF-2317-4090-A5A9-6C4F6BA9AFB1}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F02C2B9-14E3-4BAE-8AB0-929717B50D2F}
+	EndGlobalSection
+EndGlobal
