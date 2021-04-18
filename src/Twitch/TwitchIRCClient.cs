@@ -118,63 +118,65 @@ namespace Bitzophrenia {
 				MelonLogger.Msg("Running IRC WebSocket Listener");
 
 				while (true) {
-					if (this.webSocket == null) {
-						continue;
-					}
-
-					if (webSocket.State == WebSocketState.Closed) {
-						MelonLogger.Msg("WebSocket has been closed.");
-						break;
-					}
-
-					if (webSocket.State != WebSocketState.Open) {
-						continue;
-					}
-
-					byte[] buffer = new byte[TwitchIRCClient.RECEIVE_CHUNK_SIZE];
-
-					var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-
-					if (result.MessageType == WebSocketMessageType.Close) {
-						await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
-						continue;
-					}
-
-					MelonLogger.Msg("[IRC <-] " + TwitchIRCClient.UTF8_ENCODING.GetString(buffer));
-
-					// split the incomming messages by line
-					string[] lines = TwitchIRCClient.UTF8_ENCODING.GetString(buffer).Split('\n');
-					foreach(string line in lines) {
-						if (line.Trim().Length == 0) {
+					try {
+						if (this.webSocket == null) {
 							continue;
 						}
 
-						string[] subparts = line.Split(new char[] {':'}, 3);
+						if (webSocket.State == WebSocketState.Closed) {
+							MelonLogger.Msg("WebSocket has been closed.");
+							break;
+						}
 
-						// ping command
-						if (subparts.Length == 2) {
-							if (subparts[0].Equals("PING")) {
-								this.Pong();
+						if (webSocket.State != WebSocketState.Open) {
+							continue;
+						}
+
+						byte[] buffer = new byte[TwitchIRCClient.RECEIVE_CHUNK_SIZE];
+
+						var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+
+						if (result.MessageType == WebSocketMessageType.Close) {
+							await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+							continue;
+						}
+
+						MelonLogger.Msg("[IRC <-] " + TwitchIRCClient.UTF8_ENCODING.GetString(buffer));
+
+						// split the incomming messages by line
+						string[] lines = TwitchIRCClient.UTF8_ENCODING.GetString(buffer).Split('\n');
+						foreach(string line in lines) {
+							if (line.Trim().Length == 0) {
+								continue;
+							}
+
+							string[] subparts = line.Split(new char[] {':'}, 3);
+
+							// ping command
+							if (subparts.Length == 2) {
+								if (subparts[0].Equals("PING")) {
+									this.Pong();
+								}
+								continue;
+							}
+
+							// incoming private message
+							if (subparts.Length == 3) {
+								string[] metaParts = subparts[1].Split(' ');
+								if (metaParts.Length >= 3 && metaParts[1] == "PRIVMSG") {
+									this.OnPrivateMessage(metaParts[2].Substring(1), subparts[2]);
+								}
+								continue;
+							}
+
+							// unknown command
+							MelonLogger.Msg("UNKNOWN COMMAND");
+							foreach(string tmp in subparts) {
+								MelonLogger.Msg("\t-> " + tmp);
 							}
 							continue;
 						}
-
-						// incoming private message
-						if (subparts.Length == 3) {
-							string[] metaParts = subparts[1].Split(' ');
-							if (metaParts.Length >= 3 && metaParts[1] == "PRIVMSG") {
-								this.OnPrivateMessage(metaParts[2].Substring(1), subparts[2]);
-							}
-							continue;
-						}
-
-						// unknown command
-						MelonLogger.Msg("UNKNOWN COMMAND");
-						foreach(string tmp in subparts) {
-							MelonLogger.Msg("\t-> " + tmp);
-						}
-						continue;
-					}
+					} finally {}
 				}
 
 				MelonLogger.Msg("Stopping IRC WebSocket Listener");
