@@ -177,7 +177,7 @@ namespace Bitzophrenia {
 
 							// ping command
 							if (subparts.Length == 2) {
-								if (subparts[0].Equals("PING")) {
+								if (subparts[0].Trim() == "PING") {
 									this.Pong();
 								}
 								continue;
@@ -193,13 +193,12 @@ namespace Bitzophrenia {
 							}
 
 							// unknown command
-							MelonLogger.Msg("UNKNOWN COMMAND");
-							foreach(string tmp in subparts) {
-								MelonLogger.Msg("\t-> " + tmp);
-							}
+							MelonLogger.Msg("UNKNOWN COMMAND: " + line);
 							continue;
 						}
-					} finally {}
+					} catch {
+						MelonLogger.Msg("[IRC Client] EXCEPTION CAUGHT");
+					}
 				}
 
 				MelonLogger.Msg("Stopping IRC WebSocket Listener");
