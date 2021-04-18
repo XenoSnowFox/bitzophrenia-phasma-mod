@@ -28,6 +28,12 @@ namespace Bitzophrenia {
 			private static UTF8Encoding UTF8_ENCODING = new UTF8Encoding();
 
 			/// <summary></summary>
+			private string nickName;
+
+			/// <summary></summary>
+			private string channelName;
+
+			/// <summary></summary>
 			private ClientWebSocket webSocket = null;
 
 			/// <summary>Collection of callbacks to be invoked on a successful authentication</summary>
@@ -73,6 +79,8 @@ namespace Bitzophrenia {
 				this.webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None)
 						.Wait();
 				MelonLogger.Msg("[IRC ->] " + TwitchIRCClient.UTF8_ENCODING.GetString(buffer));
+
+				this.nickName = withNickName;
 			}
 
 			/// <summary>Join a channel</summary>
@@ -83,6 +91,21 @@ namespace Bitzophrenia {
 				}
 
 				byte[] buffer = TwitchIRCClient.UTF8_ENCODING.GetBytes("JOIN #" + withChannelName.ToLower());
+				this.webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None)
+						.Wait();
+				MelonLogger.Msg("[IRC ->] " + TwitchIRCClient.UTF8_ENCODING.GetString(buffer));
+
+				this.channelName = withChannelName;
+			}
+
+			/// <summary>Sends a message via the IRC</summary>
+			public void SendPrivateMessage(string withMessage) {
+				MelonLogger.Msg("[IRL Cliect] SendPrivateMessage()");
+				if (this.webSocket == null) {
+					return;
+				}
+
+				byte[] buffer = TwitchIRCClient.UTF8_ENCODING.GetBytes(":" + this.nickName + "!" + this.nickName + "@" + this.nickName + ".tmi.twitch.tv PRIVMSG #" + this.channelName.ToLower() + " :" + withMessage);
 				this.webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None)
 						.Wait();
 				MelonLogger.Msg("[IRC ->] " + TwitchIRCClient.UTF8_ENCODING.GetString(buffer));
