@@ -40,7 +40,7 @@ namespace Bitzophrenia {
 				server.Prefixes.Add("http://127.0.0.1/");
 				server.Prefixes.Add("http://localhost/");
 				server.Start();
-				MelonLogger.Msg("Starting Authentication Callback WebServer");
+				MelonLogger.Msg("Starting WebService");
 
 				while (true) {
 					HttpListenerContext context = server.GetContext();
@@ -115,7 +115,7 @@ namespace Bitzophrenia {
 
 			/// <summary>Starts the authentication process.</summary>
 			public void StartAuthenticationFlow() {
-				MelonLogger.Msg("Starting Twitch Authentication Flow");
+				MelonLogger.Msg("Open URL: " + this.GetAuthenticationUrl());
 				System.Diagnostics.Process.Start(this.GetAuthenticationUrl());
 			}
 
