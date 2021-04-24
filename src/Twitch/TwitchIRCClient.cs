@@ -132,7 +132,9 @@ namespace Bitzophrenia {
 			/// <summary>Invokes any linked delegates with a newly received message</summary>
 			private void OnPrivateMessage(string withNickName, string withMessage) {
 				foreach(var d in this.onPrivateMessageDelegates) {
-					d(withNickName, withMessage);
+					try {
+						d(withNickName, withMessage);
+					} catch {}
 				}
 			}
 
