@@ -122,10 +122,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\IAction.cs" />
+
+    <Compile Include="src\Phasma\Global.cs" />
+    <Compile Include="src\Phasma\RPC.cs" />
+    <Compile Include="src\Phasma\Controllers\Game.cs" />
+    <Compile Include="src\Phasma\Controllers\Journal.cs" />
+    <Compile Include="src\Phasma\Controllers\Level.cs" />
+    <Compile Include="src\Phasma\Controllers\Mission.cs" />
+    <Compile Include="src\Phasma\Controllers\MultiPlayer.cs" />
+    <Compile Include="src\Phasma\Controllers\Sound.cs" />
+    <Compile Include="src\Phasma\Objects\Ghost.cs" />
+    <Compile Include="src\Phasma\Objects\PCFlashlight.cs" />
+    <Compile Include="src\Phasma\Objects\Player.cs" />
+    <Compile Include="src\Phasma\Objects\PlayerSanity.cs" />
+    <Compile Include="src\Phasma\Objects\Torch.cs" />
+
     <Compile Include="src\Properties\AssemblyInfo.cs" />
     <Compile Include="src\Properties\BuildInfo.cs" />
+
     <Compile Include="src\Twitch\TwitchIRCClient.cs" />
     <Compile Include="src\Twitch\TwitchOAuth2Client.cs" />
+
     <Compile Include="src\Utils\BasicInjection.cs" />
   </ItemGroup>
   <ItemGroup>
