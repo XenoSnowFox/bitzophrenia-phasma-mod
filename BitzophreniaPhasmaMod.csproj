@@ -123,6 +123,15 @@
   <ItemGroup>
     <Compile Include="src\IAction.cs" />
 
+    <Compile Include="src\Actions\AbstractAction.cs" />
+    <Compile Include="src\Actions\DropAllItems.cs" />
+    <Compile Include="src\Actions\GhostName.cs" />
+    <Compile Include="src\Actions\InvestigationCommencement.cs" />
+    <Compile Include="src\Actions\KillCurrentPlayer.cs" />
+    <Compile Include="src\Actions\MissionObjectives.cs" />
+    <Compile Include="src\Actions\PlayRandomGhostSound.cs" />
+    <Compile Include="src\Actions\ToggleTorches.cs" />
+
     <Compile Include="src\Phasma\Global.cs" />
     <Compile Include="src\Phasma\RPC.cs" />
     <Compile Include="src\Phasma\Controllers\Game.cs" />
