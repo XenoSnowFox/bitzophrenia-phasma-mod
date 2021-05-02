@@ -21,9 +21,9 @@ namespace Bitzophrenia
 
 		private Queue<Bitzophrenia.IAction> actionQueue = new Queue<IAction>();
 
-        private static void Log(string withMessage) {
-            MelonLogger.Msg("[MAIN] " + withMessage);
-        }
+		private static void Log(string withMessage) {
+			MelonLogger.Msg("[MAIN] " + withMessage);
+		}
 
 #if (MOD_ENABLED)
 		public override void OnApplicationStart()
@@ -40,18 +40,18 @@ namespace Bitzophrenia
 			if (ircClient != null) {
 				ircClient.AddOnPrivateMessageDelegate(this.HandleTwitchIRCMessage);
 			}
-            var pubSubClient = this.twitchController.GetPubSubClient();
-            if (pubSubClient != null) {
-                pubSubClient.AddOnChannelPointRedemptionDelegate(this.HandleTwitchChannelPointRedemption);
-            }
+			var pubSubClient = this.twitchController.GetPubSubClient();
+			if (pubSubClient != null) {
+				pubSubClient.AddOnChannelPointRedemptionDelegate(this.HandleTwitchChannelPointRedemption);
+			}
 
 			// set up the action factories
 			this.ircActionFactory = new Bitzophrenia.TwitchIRCActionFactory(ircClient);
 			this.channelPointRedemptionFactory = new Bitzophrenia.TwitchChannelPointRedemptionActionFactory(ircClient);
 			this.bitRedemptionFactory = new Bitzophrenia.TwitchBitRedemptionActionFactory(ircClient);
 
-            // set up callback for when an investigation starts
-            // this will publish a message in chat
+			// set up callback for when an investigation starts
+			// this will publish a message in chat
 			this.Phasmophobia.AddOnMissionStartAction(new Bitzophrenia.Actions.InvestigationCommencement(this.Phasmophobia, ircClient));
 
 			// load IRC commands
@@ -71,7 +71,7 @@ namespace Bitzophrenia
 			this.bitRedemptionFactory.Add(500, new Bitzophrenia.Actions.StartGhostHunt(this.Phasmophobia, ircClient, this.actionQueue));
 			this.bitRedemptionFactory.Add(666, new Bitzophrenia.Actions.KillCurrentPlayer(this.Phasmophobia, ircClient));
 
-            // load CHANNEL POINT redemptions
+			// load CHANNEL POINT redemptions
 			// this.channelPointRedemptionFactory.Add("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", new Bitzophrenia.Actions.FlickerRandomLightSwitch(this.Phasmophobia, ircClient, this.actionQueue));
 		}
 
