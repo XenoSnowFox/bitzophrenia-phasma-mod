@@ -102,6 +102,9 @@
       <HintPath>P:\Steam\steamapps\common\Phasmophobia\MelonLoader\Managed\UnityEngine.AnimationModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>P:\Steam\steamapps\common\Phasmophobia\MelonLoader\Dependencies\AssemblyGenerator\UnityDependencies\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>P:\Steam\steamapps\common\Phasmophobia\MelonLoader\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
