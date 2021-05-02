@@ -3,6 +3,7 @@
 using MelonLoader;
 using System.Collections.Generic;
 using Console = System.Console;
+using UnityEngine.InputSystem;
 
 namespace Bitzophrenia
 {
@@ -43,6 +44,7 @@ namespace Bitzophrenia
 			var pubSubClient = this.twitchController.GetPubSubClient();
 			if (pubSubClient != null) {
 				pubSubClient.AddOnChannelPointRedemptionDelegate(this.HandleTwitchChannelPointRedemption);
+				pubSubClient.AddOnBitRedemptionDelegate(this.HandleTwitchBitRedemption);
 			}
 
 			// set up the action factories
@@ -107,6 +109,26 @@ namespace Bitzophrenia
 		 */
 		public override void OnUpdate()
 		{
+			// tempory fallbacks in the event that Bit redemptions do not work
+			try {
+				if (this.Phasmophobia.IsInLevel() && this.Phasmophobia.HasMissionStarted()) {
+					Keyboard keyboard = Keyboard.current;
+
+					// NUMPAD 0
+					if (keyboard.numpad0Key.wasPressedThisFrame) {
+						this.HandleTwitchBitRedemption("", 666);
+					}
+
+					// NUMPAD 1
+					if (keyboard.numpad1Key.wasPressedThisFrame) {
+						this.HandleTwitchBitRedemption("", 500);
+					}
+				}
+			} catch {
+				MelonLogger.Error("Error in the `onUpdate` method");
+			}
+
+			// Run our main update loop
 			try {
 				this.Phasmophobia.Update();
 				this.ExecuteQueueActions();
