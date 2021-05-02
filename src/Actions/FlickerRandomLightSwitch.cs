@@ -60,7 +60,7 @@ namespace Bitzophrenia
 					// get the original state of the light (ie on/off)
 					bool initialState = withLightSwitch.IsSwitchedOn();
 
-					int currentDuration = UnityEngine.Random.Range(3333, 6666);
+					int currentDuration = UnityEngine.Random.Range(2222, 6666);
 					do {
 						int timeout = UnityEngine.Random.Range(30, 400);
 						this.actionQueue.Enqueue(new Bitzophrenia.Actions.ToggleSpecificLightSwitch(this.Phasmophobia(), withLightSwitch, this.ircClient));
