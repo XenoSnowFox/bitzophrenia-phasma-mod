@@ -21,13 +21,17 @@ namespace Bitzophrenia
 
 		private Queue<Bitzophrenia.IAction> actionQueue = new Queue<IAction>();
 
+        private static void Log(string withMessage) {
+            MelonLogger.Msg("[MAIN] " + withMessage);
+        }
+
 #if (MOD_ENABLED)
 		public override void OnApplicationStart()
 		{
 			BasicInjection.Main();
-			MelonLogger.Msg("Starting Application");
+			Main.Log("Starting Application");
 
-			MelonLogger.Msg("Set console title to: Phasmophobia");
+			Main.Log("Set console title to: Phasmophobia");
 			Console.Title = string.Format("Phasmophobia");
 
 			// initialize twitch client
@@ -68,15 +72,18 @@ namespace Bitzophrenia
 			this.bitRedemptionFactory.Add(666, new Bitzophrenia.Actions.KillCurrentPlayer(this.Phasmophobia, ircClient));
 
             // load CHANNEL POINT redemptions
+			// this.channelPointRedemptionFactory.Add("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", new Bitzophrenia.Actions.FlickerRandomLightSwitch(this.Phasmophobia, ircClient, this.actionQueue));
 		}
 
 		public override void OnApplicationQuit()
 		{
-			MelonLogger.Msg("Quitting Application");
+			Main.Log("Quitting Application");
 			try {
 				this.twitchController
 						.GetIRCClient()
 						.Disconnect();
+			} catch { }
+			try {
 				this.twitchController
 						.GetPubSubClient()
 						.Disconnect();
@@ -85,12 +92,12 @@ namespace Bitzophrenia
 
 		public override void OnSceneWasLoaded(int buildIndex, string sceneName)
 		{
-			MelonLogger.Msg("OnSceneWasLoaded: [" + buildIndex + "] " + sceneName);
+			Main.Log("OnSceneWasLoaded: [" + buildIndex + "] " + sceneName);
 		}
 
 		public override void OnSceneWasInitialized(int buildIndex, string sceneName)
 		{
-			MelonLogger.Msg("OnSceneWasInitialized: [" + buildIndex + "] " + sceneName);
+			Main.Log("OnSceneWasInitialized: [" + buildIndex + "] " + sceneName);
 			this.Phasmophobia.Reset();
 			this.Phasmophobia.SetCurrentScene(buildIndex, sceneName);
 		}
@@ -114,7 +121,7 @@ namespace Bitzophrenia
 			if (this.actionQueue.Count <= 0) {
 				return;
 			}
-			MelonLogger.Msg(this.actionQueue.Count + " actions were queued");
+			Main.Log(this.actionQueue.Count + " actions were queued");
 
 			HashSet<Bitzophrenia.IAction> hashSet = new HashSet<IAction>();
 			while (this.actionQueue.Count > 0) {
@@ -128,7 +135,7 @@ namespace Bitzophrenia
 					} catch {}
 				}
 			}
-			MelonLogger.Msg(hashSet.Count + " actions have been executed");
+			Main.Log(hashSet.Count + " actions have been executed");
 		}
 
 		private void HandleTwitchIRCMessage(string withUsername, string withMessage) {
