@@ -36,6 +36,10 @@ namespace Bitzophrenia
 			if (ircClient != null) {
 				ircClient.AddOnPrivateMessageDelegate(this.HandleTwitchIRCMessage);
 			}
+            var pubSubClient = this.twitchController.GetPubSubClient();
+            if (pubSubClient != null) {
+                pubSubClient.AddOnChannelPointRedemptionDelegate(this.HandleTwitchChannelPointRedemption);
+            }
 
 			// set up the action factories
 			this.ircActionFactory = new Bitzophrenia.TwitchIRCActionFactory(ircClient);
@@ -62,6 +66,8 @@ namespace Bitzophrenia
 			// load BIT commands
 			this.bitRedemptionFactory.Add(500, new Bitzophrenia.Actions.StartGhostHunt(this.Phasmophobia, ircClient, this.actionQueue));
 			this.bitRedemptionFactory.Add(666, new Bitzophrenia.Actions.KillCurrentPlayer(this.Phasmophobia, ircClient));
+
+            // load CHANNEL POINT redemptions
 		}
 
 		public override void OnApplicationQuit()

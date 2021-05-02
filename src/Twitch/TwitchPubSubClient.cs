@@ -1,6 +1,8 @@
 
 using MelonLoader;
 
+using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.Net.WebSockets;
@@ -10,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace Bitzophrenia {
 	namespace Twitch {
+
+		/// <summary> Callback method for channel point redemptions.</summary>
+		public delegate void OnChannelPointRedemption(string withNickName, string withGuid);
 
 		/// <summary></summary>
 		public class TwitchPubSubClient {
@@ -30,6 +35,9 @@ namespace Bitzophrenia {
 
 			private string authenticationToken = null;
 
+			/// <summary>Collection of callbacks to be invoked on a successful authentication</summary>
+			private List<OnChannelPointRedemption> onChannelPointRedemptionDelegates = new List<OnChannelPointRedemption>();
+
 			/// <summary></summary>
 			public TwitchPubSubClient() {
 				new Task(this.RunWebSocketListener).Start();
@@ -38,7 +46,7 @@ namespace Bitzophrenia {
 			/// <summary>Starts a new connection via WbSocket to Twitch's PubSub server.</summary>
 			public void Connect()
 			{
-				MelonLogger.Msg("[PUBSUB Cliect] Connect()");
+				TwitchPubSubClient.Log("Connect()");
 				if (this.webSocket != null)
 				{
 					return;
@@ -68,7 +76,7 @@ namespace Bitzophrenia {
 			/// <summary>Pong command for when twitch issues a PING</summary>
 			public void Ping()
 			{
-				MelonLogger.Msg("[PUBSUB Cliect] Ping()");
+				TwitchPubSubClient.Log("Ping()");
 				if (this.webSocket == null)
 				{
 					return;
@@ -77,13 +85,13 @@ namespace Bitzophrenia {
 				byte[] buffer = TwitchPubSubClient.UTF8_ENCODING.GetBytes("{\"type\":\"PING\"}");
 				this.webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None)
 						.Wait();
-				MelonLogger.Msg("[PUBSUB ->] " + TwitchPubSubClient.UTF8_ENCODING.GetString(buffer));
+				TwitchPubSubClient.Log("[->] " + TwitchPubSubClient.UTF8_ENCODING.GetString(buffer));
 			}
 
 			/// <summary>Listen command</summary>
 			public void Listen()
 			{
-				MelonLogger.Msg("[PUBSUB Cliect] Listen()");
+				TwitchPubSubClient.Log("Listen()");
 				if (this.webSocket == null)
 				{
 					return;
@@ -92,13 +100,32 @@ namespace Bitzophrenia {
 				byte[] buffer = TwitchPubSubClient.UTF8_ENCODING.GetBytes("{\"type\":\"LISTEN\", \"noonce\":\"16465456623\", \"data\": {  \"topics\":[\"channel-bits-events-v2.125483513\", \"channel-points-channel-v1.125483513\"], \"auth_token\":\"" + this.authenticationToken + "\" }}");
 				this.webSocket.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None)
 						.Wait();
-				MelonLogger.Msg("[PUBSUB ->] " + TwitchPubSubClient.UTF8_ENCODING.GetString(buffer));
+				TwitchPubSubClient.Log("[->] " + TwitchPubSubClient.UTF8_ENCODING.GetString(buffer));
+			}
+
+			/// <summary>Adds a delegate to be invoked when chennel points have been redeemed.</summary>
+			public void AddOnChannelPointRedemptionDelegate(OnChannelPointRedemption withDelegate)
+			{
+				this.onChannelPointRedemptionDelegates.Add(withDelegate);
+			}
+
+			/// <summary>Invokes any linked delegates when channel points are redeemed</summary>
+			private void OnChannelPointRedemption(Bitzophrenia.Twitch.TwitchChannelPointsMessage withMessage)
+			{
+				foreach (var d in this.onChannelPointRedemptionDelegates)
+				{
+					try
+					{
+						d(withMessage.data.redemption.user.login, withMessage.data.redemption.reward.id);
+					}
+					catch { }
+				}
 			}
 
 			/// <summary>Websicket listerner</summary>
 			private async void RunWebSocketListener()
 			{
-				MelonLogger.Msg("Running PubSub WebSocket Listener");
+				TwitchPubSubClient.Log("Running PubSub WebSocket Listener");
 
 				HashSet<string> caughtExceptions = new HashSet<string>();
 
@@ -113,7 +140,7 @@ namespace Bitzophrenia {
 
 						if (this.webSocket.State == WebSocketState.Closed)
 						{
-							MelonLogger.Msg("WebSocket has been closed.");
+							TwitchPubSubClient.Log("WebSocket has been closed.");
 							break;
 						}
 
@@ -133,57 +160,31 @@ namespace Bitzophrenia {
 
 						// split the incomming messages by line
 						string input = TwitchPubSubClient.UTF8_ENCODING.GetString(buffer);
-						MelonLogger.Msg("[PUBSUB <-] " + input);
+						TwitchPubSubClient.Log("[<-] " + input);
 
-						// string[] lines = TwitchPubSubClient.UTF8_ENCODING.GetString(buffer).Split('\n');
-						// foreach (string line in lines)
-						// {
-							// if (line.Trim().Length == 0)
-							// {
-							// 	continue;
-							// }
+						Bitzophrenia.Twitch.TwitchMessage msg = JsonConvert.DeserializeObject<Bitzophrenia.Twitch.TwitchMessage>(input);
 
-							// string[] subparts = line.Split(new char[] { ':' }, 3);
-
-							// ping command
-							// if (subparts.Length == 2)
-							// {
-							// 	if (subparts[0].Trim() == "PING")
-							// 	{
-							// 		this.Pong();
-							// 	}
-							// 	continue;
-							// }
-
-							// incoming private message
-							// if (subparts.Length == 3)
-							// {
-							// 	string[] metaParts = subparts[1].Split(' ');
-							// 	if (metaParts.Length >= 3 && metaParts[1] == "PRIVMSG")
-							// 	{
-							// 		this.OnPrivateMessage(metaParts[2].Substring(1), subparts[2]);
-							// 	}
-							// 	continue;
-							// }
-
-							// unknown command
-						// 	MelonLogger.Msg("UNKNOWN COMMAND: " + line);
-						// 	continue;
-						// }
+						// attempt channel point redemption
+						var channelPointRedemption = msg.ToChannelPointsMessage();
+						if (channelPointRedemption != null) {
+							this.OnChannelPointRedemption(channelPointRedemption);
+						}
 					}
 					catch (Exception ex)
 					{
 						if (caughtExceptions.Add(ex.ToString())) {
-							MelonLogger.Msg("[PUBSUB Client] EXCEPTION CAUGHT");
-							MelonLogger.Msg("[PUBSUB Client] " + ex.GetType().ToString());
-							MelonLogger.Msg("[PUBSUB Client] " + ex.ToString());
+							TwitchPubSubClient.Log("EXCEPTION CAUGHT");
+							TwitchPubSubClient.Log(ex.GetType().ToString());
+							TwitchPubSubClient.Log(ex.ToString());
 						}
 					}
-
-					// Thread.Sleep(100);
 				}
 
-				MelonLogger.Msg("Stopping PUBSUB WebSocket Listener");
+				TwitchPubSubClient.Log("Stopping PUBSUB WebSocket Listener");
+			}
+
+			private static void Log(string withMessage) {
+				MelonLogger.Msg("[PUBSUB Client] " + withMessage);
 			}
 		}
 	}

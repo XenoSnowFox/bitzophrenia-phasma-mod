@@ -173,6 +173,7 @@
 
     <Compile Include="src\Twitch\TwitchController.cs" />
     <Compile Include="src\Twitch\TwitchIRCClient.cs" />
+    <Compile Include="src\Twitch\TwitchMessage.cs" />
     <Compile Include="src\Twitch\TwitchOAuth2Client.cs" />
     <Compile Include="src\Twitch\TwitchPubSubClient.cs" />
 
