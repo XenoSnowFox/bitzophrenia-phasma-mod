@@ -124,12 +124,19 @@
     <Compile Include="src\IAction.cs" />
 
     <Compile Include="src\Actions\AbstractAction.cs" />
-    <Compile Include="src\Actions\DropAllItems.cs" />
+    <Compile Include="src\Actions\DropCurrentItem.cs" />
+    <Compile Include="src\Actions\FlickerRandomLightSwitch.cs" />
+    <Compile Include="src\Actions\GhostAppearence.cs" />
+    <Compile Include="src\Actions\GhostDisappearence.cs" />
     <Compile Include="src\Actions\GhostName.cs" />
     <Compile Include="src\Actions\InvestigationCommencement.cs" />
     <Compile Include="src\Actions\KillCurrentPlayer.cs" />
     <Compile Include="src\Actions\MissionObjectives.cs" />
+    <Compile Include="src\Actions\PlayerSanity.cs" />
     <Compile Include="src\Actions\PlayRandomGhostSound.cs" />
+    <Compile Include="src\Actions\StartGhostHunt.cs" />
+    <Compile Include="src\Actions\StopGhostHunt.cs" />
+    <Compile Include="src\Actions\ToggleSpecificLightSwitch.cs" />
     <Compile Include="src\Actions\ToggleTorches.cs" />
 
     <Compile Include="src\Phasma\Global.cs" />
@@ -140,10 +147,16 @@
     <Compile Include="src\Phasma\Controllers\Mission.cs" />
     <Compile Include="src\Phasma\Controllers\MultiPlayer.cs" />
     <Compile Include="src\Phasma\Controllers\Sound.cs" />
+    <Compile Include="src\Phasma\Controllers\SpeechRecognition.cs" />
+    <Compile Include="src\Phasma\Objects\Door.cs" />
     <Compile Include="src\Phasma\Objects\Ghost.cs" />
+    <Compile Include="src\Phasma\Objects\LevelRoom.cs" />
+    <Compile Include="src\Phasma\Objects\LightSwitch.cs" />
     <Compile Include="src\Phasma\Objects\PCFlashlight.cs" />
+    <Compile Include="src\Phasma\Objects\PCProbGrab.cs" />
     <Compile Include="src\Phasma\Objects\Player.cs" />
     <Compile Include="src\Phasma\Objects\PlayerSanity.cs" />
+    <Compile Include="src\Phasma\Objects\SpiritBox.cs" />
     <Compile Include="src\Phasma\Objects\Torch.cs" />
 
     <Compile Include="src\Properties\AssemblyInfo.cs" />
