@@ -70,6 +70,7 @@ namespace Bitzophrenia
 			this.ircActionFactory.Add("!torch", new Bitzophrenia.Actions.ToggleTorches(this.Phasmophobia, ircClient));
 
 			// load BIT commands
+			this.bitRedemptionFactory.Add(100, new Bitzophrenia.Actions.ZeroSanity(this.Phasmophobia, ircClient));
 			this.bitRedemptionFactory.Add(500, new Bitzophrenia.Actions.StartGhostHunt(this.Phasmophobia, ircClient, this.actionQueue));
 			this.bitRedemptionFactory.Add(666, new Bitzophrenia.Actions.KillCurrentPlayer(this.Phasmophobia, ircClient));
 
@@ -122,6 +123,30 @@ namespace Bitzophrenia
 					// NUMPAD 1
 					if (keyboard.numpad1Key.wasPressedThisFrame) {
 						this.HandleTwitchBitRedemption("", 500);
+					}
+
+					// NUMPAD 2
+					if (keyboard.numpad2Key.wasPressedThisFrame) {
+						this.HandleTwitchBitRedemption("", 100);
+					}
+
+					// NUMPAD 3
+					if (keyboard.numpad3Key.wasPressedThisFrame) {
+						this.Phasmophobia.GetGameController()
+								?.GetPlayer()
+								?.GetSanityObject()
+								?.Log();
+					}
+
+					// NUMPAD 2
+					if (keyboard.numpad9Key.wasPressedThisFrame) {
+						var sanity = this.Phasmophobia.GetGameController()
+								.GetPlayer()
+								.GetSanityObject()
+								.GetInstance();
+						//sanity.ChangeSanity(100);
+						//sanity.UpdatePlayerSanity();
+						sanity.NetworkedUpdatePlayerSanity(0);
 					}
 				}
 			} catch {
