@@ -16,6 +16,9 @@ namespace Bitzophrenia {
 		/// <summary> Callback method for channel point redemptions.</summary>
 		public delegate void OnChannelPointRedemption(string withNickName, string withGuid);
 
+		/// <summary> Callback method for bit redemptions.</summary>
+		public delegate void OnBitRedemption(string withNickName, int withAmount);
+
 		/// <summary></summary>
 		public class TwitchPubSubClient {
 			/// <summary></summary>
@@ -37,6 +40,9 @@ namespace Bitzophrenia {
 
 			/// <summary>Collection of callbacks to be invoked on a successful authentication</summary>
 			private List<OnChannelPointRedemption> onChannelPointRedemptionDelegates = new List<OnChannelPointRedemption>();
+
+			/// <summary>Collection of callbacks to be invoked on a successful authentication</summary>
+			private List<OnBitRedemption> onBitRedemptionDelegates = new List<OnBitRedemption>();
 
 			/// <summary></summary>
 			public TwitchPubSubClient() {
@@ -122,6 +128,25 @@ namespace Bitzophrenia {
 				}
 			}
 
+			/// <summary>Adds a delegate to be invoked when bits have been redeemed.</summary>
+			public void AddOnBitRedemptionDelegate(OnBitRedemption withDelegate)
+			{
+				this.onBitRedemptionDelegates.Add(withDelegate);
+			}
+
+			/// <summary>Invokes any linked delegates when channel points are redeemed</summary>
+			private void OnBitRedemption(Bitzophrenia.Twitch.TwitchBitEventMessage withEvent)
+			{
+				foreach (var d in this.onBitRedemptionDelegates)
+				{
+					try
+					{
+						d(withEvent.data.user_name, withEvent.data.bits_used);
+					}
+					catch { }
+				}
+			}
+
 			/// <summary>Websicket listerner</summary>
 			private async void RunWebSocketListener()
 			{
@@ -168,6 +193,12 @@ namespace Bitzophrenia {
 						var channelPointRedemption = msg.ToChannelPointsMessage();
 						if (channelPointRedemption != null) {
 							this.OnChannelPointRedemption(channelPointRedemption);
+						}
+
+						// attempt bit redemption
+						var bitRedemption = msg.ToBitEventMessage();
+						if (bitRedemption != null) {
+							this.OnBitRedemption(bitRedemption);
 						}
 					}
 					catch (Exception ex)

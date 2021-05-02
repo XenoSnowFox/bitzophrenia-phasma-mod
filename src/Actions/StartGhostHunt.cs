@@ -61,7 +61,7 @@ namespace Bitzophrenia
 			}
 
 			private void CompleteHuntTask() {
-				Thread.Sleep(UnityEngine.Random.Range(5000, 25000));
+				Thread.Sleep(UnityEngine.Random.Range(10000, 25000));
 				this.actionQueue.Enqueue(this.stopHuntAction);
 				this.isHunting = false;
 			}
