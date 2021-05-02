@@ -144,6 +144,7 @@
     <Compile Include="src\Actions\ToggleTorches.cs" />
 
     <Compile Include="src\Factories\TwitchIRCActionFactory.cs" />
+    <Compile Include="src\Factories\TwitchChannelPointRedemptionActionFactory.cs" />
     <Compile Include="src\Factories\TwitchBitRedemptionActionFactory.cs" />
 
     <Compile Include="src\Phasma\Global.cs" />
@@ -172,6 +173,7 @@
 
     <Compile Include="src\Twitch\TwitchController.cs" />
     <Compile Include="src\Twitch\TwitchIRCClient.cs" />
+    <Compile Include="src\Twitch\TwitchMessage.cs" />
     <Compile Include="src\Twitch\TwitchOAuth2Client.cs" />
     <Compile Include="src\Twitch\TwitchPubSubClient.cs" />
 
