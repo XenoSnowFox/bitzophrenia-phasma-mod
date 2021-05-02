@@ -142,6 +142,9 @@
     <Compile Include="src\Actions\ToggleSpecificLightSwitch.cs" />
     <Compile Include="src\Actions\ToggleTorches.cs" />
 
+    <Compile Include="src\Factories\TwitchIRCActionFactory.cs" />
+    <Compile Include="src\Factories\TwitchBitRedemptionActionFactory.cs" />
+
     <Compile Include="src\Phasma\Global.cs" />
     <Compile Include="src\Phasma\RPC.cs" />
     <Compile Include="src\Phasma\Controllers\Game.cs" />

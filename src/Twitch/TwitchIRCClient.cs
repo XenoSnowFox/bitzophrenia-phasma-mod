@@ -22,10 +22,10 @@ namespace Bitzophrenia
 			private const string IRC_WEBSOCKET_URI = "wss://irc-ws.chat.twitch.tv:443";
 
 			/// <summary></summary>
-			private const int SEND_CHUNK_SIZE = 256;
+			private const int SEND_CHUNK_SIZE = 1024;
 
 			/// <summary></summary>
-			private const int RECEIVE_CHUNK_SIZE = 256;
+			private const int RECEIVE_CHUNK_SIZE = 1024;
 
 			/// <summary></summary>
 			private static UTF8Encoding UTF8_ENCODING = new UTF8Encoding();
@@ -59,6 +59,17 @@ namespace Bitzophrenia
 
 				this.webSocket = new ClientWebSocket();
 				this.webSocket.ConnectAsync(new Uri(TwitchIRCClient.IRC_WEBSOCKET_URI), CancellationToken.None).Wait();
+			}
+
+			public void Disconnect()
+			{
+				if (this.webSocket != null)
+				{
+					return;
+				}
+
+				this.webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Quitting", CancellationToken.None).Wait();
+				this.webSocket = null;
 			}
 
 			/// <summary>Send the authentication command</summary>
@@ -164,6 +175,8 @@ namespace Bitzophrenia
 			{
 				MelonLogger.Msg("Running IRC WebSocket Listener");
 
+				HashSet<string> caughtExceptions = new HashSet<string>();
+
 				while (true)
 				{
 					try
@@ -173,34 +186,34 @@ namespace Bitzophrenia
 							continue;
 						}
 
-						if (webSocket.State == WebSocketState.Closed)
+						if (this.webSocket.State == WebSocketState.Closed)
 						{
 							MelonLogger.Msg("WebSocket has been closed.");
 							break;
 						}
 
-						if (webSocket.State != WebSocketState.Open)
+						if (this.webSocket.State != WebSocketState.Open)
 						{
 							continue;
 						}
 
 						byte[] buffer = new byte[TwitchIRCClient.RECEIVE_CHUNK_SIZE];
 
-						var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-
+						var result = await this.webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 						if (result.MessageType == WebSocketMessageType.Close)
 						{
-							await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+							await this.webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
 							continue;
 						}
 
-						MelonLogger.Msg("[IRC <-] " + TwitchIRCClient.UTF8_ENCODING.GetString(buffer));
+						string received = TwitchIRCClient.UTF8_ENCODING.GetString(buffer);
+						MelonLogger.Msg("[IRC <-] " + received);
 
 						// split the incomming messages by line
-						string[] lines = TwitchIRCClient.UTF8_ENCODING.GetString(buffer).Split('\n');
+						string[] lines = received.Split('\n');
 						foreach (string line in lines)
 						{
-							if (line.Trim().Length == 0)
+							if (line == null || line.Trim().Length == 0)
 							{
 								continue;
 							}
@@ -208,12 +221,9 @@ namespace Bitzophrenia
 							string[] subparts = line.Split(new char[] { ':' }, 3);
 
 							// ping command
-							if (subparts.Length == 2)
+							if (subparts.Length == 2 && subparts[0].Trim() == "PING")
 							{
-								if (subparts[0].Trim() == "PING")
-								{
-									this.Pong();
-								}
+								this.Pong();
 								continue;
 							}
 
@@ -223,20 +233,27 @@ namespace Bitzophrenia
 								string[] metaParts = subparts[1].Split(' ');
 								if (metaParts.Length >= 3 && metaParts[1] == "PRIVMSG")
 								{
-									this.OnPrivateMessage(metaParts[2].Substring(1), subparts[2]);
+									string username = metaParts[0].Trim().Split('!')[0];
+									this.OnPrivateMessage(username, subparts[2]);
 								}
 								continue;
 							}
 
 							// unknown command
-							MelonLogger.Msg("UNKNOWN COMMAND: " + line);
+							MelonLogger.Msg("[IRC Client] UNKNOWN COMMAND: `" + line + "` [Length: " + line.Length + "]");
 							continue;
 						}
 					}
-					catch
+					catch (Exception ex)
 					{
-						MelonLogger.Msg("[IRC Client] EXCEPTION CAUGHT");
+						if (caughtExceptions.Add(ex.ToString())) {
+							MelonLogger.Msg("[IRC Client] EXCEPTION CAUGHT");
+							MelonLogger.Msg("[IRC Client] " + ex.GetType().ToString());
+							MelonLogger.Msg("[IRC Client] " + ex.ToString());
+						}
 					}
+
+					// Thread.Sleep(100);
 				}
 
 				MelonLogger.Msg("Stopping IRC WebSocket Listener");
