@@ -164,7 +164,9 @@
 
     <Compile Include="src\Properties\AssemblyInfo.cs" />
     <Compile Include="src\Properties\BuildInfo.cs" />
+    <Compile Include="src\Properties\Twitch.cs" />
 
+    <Compile Include="src\Twitch\TwitchController.cs" />
     <Compile Include="src\Twitch\TwitchIRCClient.cs" />
     <Compile Include="src\Twitch\TwitchOAuth2Client.cs" />
     <Compile Include="src\Twitch\TwitchPubSubClient.cs" />
