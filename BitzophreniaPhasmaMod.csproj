@@ -144,6 +144,7 @@
     <Compile Include="src\Actions\ToggleTorches.cs" />
 
     <Compile Include="src\Factories\TwitchIRCActionFactory.cs" />
+    <Compile Include="src\Factories\TwitchChannelPointRedemptionActionFactory.cs" />
     <Compile Include="src\Factories\TwitchBitRedemptionActionFactory.cs" />
 
     <Compile Include="src\Phasma\Global.cs" />

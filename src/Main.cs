@@ -17,6 +17,8 @@ namespace Bitzophrenia
 
 		private Bitzophrenia.TwitchBitRedemptionActionFactory bitRedemptionFactory = null;
 
+		private Bitzophrenia.TwitchChannelPointRedemptionActionFactory channelPointRedemptionFactory = null;
+
 		private Queue<Bitzophrenia.IAction> actionQueue = new Queue<IAction>();
 
 #if (MOD_ENABLED)
@@ -37,6 +39,7 @@ namespace Bitzophrenia
 
 			// set up the action factories
 			this.ircActionFactory = new Bitzophrenia.TwitchIRCActionFactory(ircClient);
+			this.channelPointRedemptionFactory = new Bitzophrenia.TwitchChannelPointRedemptionActionFactory(ircClient);
 			this.bitRedemptionFactory = new Bitzophrenia.TwitchBitRedemptionActionFactory(ircClient);
 
             // set up callback for when an investigation starts
@@ -133,6 +136,15 @@ namespace Bitzophrenia
 
 		private void HandleTwitchBitRedemption(string withUsername, int withAmount) {
 			var action = this.bitRedemptionFactory.Find(withAmount);
+			if (action == null) {
+				return;
+			}
+
+			actionQueue.Enqueue(action);
+		}
+
+		private void HandleTwitchChannelPointRedemption(string withUsername, string withGuid) {
+			var action = this.channelPointRedemptionFactory.Find(withGuid);
 			if (action == null) {
 				return;
 			}
