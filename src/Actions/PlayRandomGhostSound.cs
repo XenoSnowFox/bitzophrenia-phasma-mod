@@ -11,7 +11,7 @@ namespace Bitzophrenia
 			private Bitzophrenia.Twitch.TwitchIRCClient ircClient;
 
 			public PlayRandomGhostSound(Bitzophrenia.Phasma.Global phasmophobia, Bitzophrenia.Twitch.TwitchIRCClient withIRCClient)
-					: base("Get the ghost to randomly make a sound.", phasmophobia)
+					: base("Get the ghost to randomly make a sound when the play is in the building.", phasmophobia)
 			{
 				this.ircClient = withIRCClient;
 			}
@@ -20,7 +20,7 @@ namespace Bitzophrenia
 			{
 				MelonLogger.Msg("Execuing PlayRandomGhostSound");
 
-				if (this.Phasmophobia().HasMissionStarted())
+				if (!this.Phasmophobia().HasMissionStarted())
 				{
 					this.ircClient.SendPrivateMessage("The investigation has not started yet.");
 					return;

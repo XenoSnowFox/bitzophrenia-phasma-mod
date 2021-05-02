@@ -5,20 +5,20 @@ namespace Bitzophrenia
 	namespace Actions
 	{
 
-		public class GhostName : Bitzophrenia.Actions.AbstractAction
+		public class StopGhostHunt : Bitzophrenia.Actions.AbstractAction
 		{
 
 			private Bitzophrenia.Twitch.TwitchIRCClient ircClient;
 
-			public GhostName(Bitzophrenia.Phasma.Global phasmophobia, Bitzophrenia.Twitch.TwitchIRCClient withIRCClient)
-					: base("Retrieve the Ghost's name.", phasmophobia)
+			public StopGhostHunt(Bitzophrenia.Phasma.Global phasmophobia, Bitzophrenia.Twitch.TwitchIRCClient withIRCClient)
+					: base("Force the ghost to start a hunt.", phasmophobia)
 			{
 				this.ircClient = withIRCClient;
 			}
 
 			public override void Execute()
 			{
-				MelonLogger.Msg("Execuing GhostName");
+				MelonLogger.Msg("Execuing StopGhostHunt");
 
 				if (!this.Phasmophobia().HasMissionStarted())
 				{
@@ -40,8 +40,7 @@ namespace Bitzophrenia
 					return;
 				}
 
-				string msg = "The ghost's name is " + ghost.GetName() + ".";
-				this.ircClient.SendPrivateMessage(msg);
+				ghost.EndHunt();
 			}
 		}
 	}

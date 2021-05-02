@@ -20,13 +20,13 @@ namespace Bitzophrenia
 			{
 				MelonLogger.Msg("Execuing MissionObjectives");
 
-				if (this.Phasmophobia().HasMissionStarted())
+				if (!this.Phasmophobia().HasMissionStarted())
 				{
 					this.ircClient.SendPrivateMessage("The investigation has not started yet.");
 					return;
 				}
 
-				var mission = this.Phasmophobia().GetMissionlController();
+				var mission = this.Phasmophobia().GetMissionController();
 				if (mission == null || !mission.HasMissionsLoaded())
 				{
 					this.ircClient.SendPrivateMessage("The mission objectives are not ready yet.");

@@ -21,7 +21,7 @@ namespace Bitzophrenia
 			{
 				MelonLogger.Msg("Execuing ToggleTorches");
 
-				if (this.Phasmophobia().HasMissionStarted())
+				if (!this.Phasmophobia().HasMissionStarted())
 				{
 					this.ircClient.SendPrivateMessage("The investigation has not started yet.");
 					return;
@@ -68,7 +68,7 @@ namespace Bitzophrenia
 							continue;
 						}
 
-						// flashlight.Toggle();
+						flashlight.Toggle(false, false);
 					}
 					catch { }
 				}

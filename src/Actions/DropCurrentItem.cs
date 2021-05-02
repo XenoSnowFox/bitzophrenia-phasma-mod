@@ -5,22 +5,22 @@ namespace Bitzophrenia
 	namespace Actions
 	{
 
-		public class DropAllItems : Bitzophrenia.Actions.AbstractAction
+		public class DropCurrentItem : Bitzophrenia.Actions.AbstractAction
 		{
 
 			private Bitzophrenia.Twitch.TwitchIRCClient ircClient;
 
-			public DropAllItems(Bitzophrenia.Phasma.Global phasmophobia, Bitzophrenia.Twitch.TwitchIRCClient withIRCClient)
-					: base("Makes the streamer drop all their items.", phasmophobia)
+			public DropCurrentItem(Bitzophrenia.Phasma.Global phasmophobia, Bitzophrenia.Twitch.TwitchIRCClient withIRCClient)
+					: base("Makes the streamer drop their current item.", phasmophobia)
 			{
 				this.ircClient = withIRCClient;
 			}
 
 			public override void Execute()
 			{
-				MelonLogger.Msg("Execuing DropAllItems");
+				MelonLogger.Msg("Execuing DropCurrentItem");
 
-				if (this.Phasmophobia().HasMissionStarted())
+				if (!this.Phasmophobia().HasMissionStarted())
 				{
 					this.ircClient.SendPrivateMessage("The investigation has not started yet.");
 					return;
@@ -40,7 +40,7 @@ namespace Bitzophrenia
 						.GetPlayerObject()
 						.ForceDropProbs();
 
-					string msg = "We don't need all these items.";
+					string msg = "/me doesn't need this item. YEET!";
 					this.ircClient.SendPrivateMessage(msg);
 				}
 				catch

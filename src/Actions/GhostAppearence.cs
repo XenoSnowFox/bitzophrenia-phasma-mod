@@ -5,20 +5,23 @@ namespace Bitzophrenia
 	namespace Actions
 	{
 
-		public class GhostName : Bitzophrenia.Actions.AbstractAction
+		public class GhostAppearence : Bitzophrenia.Actions.AbstractAction
 		{
 
 			private Bitzophrenia.Twitch.TwitchIRCClient ircClient;
 
-			public GhostName(Bitzophrenia.Phasma.Global phasmophobia, Bitzophrenia.Twitch.TwitchIRCClient withIRCClient)
-					: base("Retrieve the Ghost's name.", phasmophobia)
+			private Bitzophrenia.Actions.GhostDisappearence ghostDisappearenceAction;
+
+			public GhostAppearence(Bitzophrenia.Phasma.Global phasmophobia, Bitzophrenia.Twitch.TwitchIRCClient withIRCClient)
+					: base("Make the ghost appear for a short period of time.", phasmophobia)
 			{
 				this.ircClient = withIRCClient;
+				this.ghostDisappearenceAction = new Bitzophrenia.Actions.GhostDisappearence(phasmophobia, withIRCClient);
 			}
 
 			public override void Execute()
 			{
-				MelonLogger.Msg("Execuing GhostName");
+				MelonLogger.Msg("Execuing GhostAppearence");
 
 				if (!this.Phasmophobia().HasMissionStarted())
 				{
@@ -40,8 +43,7 @@ namespace Bitzophrenia
 					return;
 				}
 
-				string msg = "The ghost's name is " + ghost.GetName() + ".";
-				this.ircClient.SendPrivateMessage(msg);
+				ghost.Appear();
 			}
 		}
 	}

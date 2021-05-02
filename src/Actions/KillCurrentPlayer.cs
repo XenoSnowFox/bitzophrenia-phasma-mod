@@ -20,7 +20,7 @@ namespace Bitzophrenia
 			{
 				MelonLogger.Msg("Execuing KillCurrentPlayer");
 
-				if (this.Phasmophobia().HasMissionStarted())
+				if (!this.Phasmophobia().HasMissionStarted())
 				{
 					this.ircClient.SendPrivateMessage("The investigation has not started yet.");
 					return;
