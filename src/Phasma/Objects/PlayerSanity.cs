@@ -7,6 +7,7 @@ namespace Bitzophrenia
 	{
 		namespace Objects
 		{
+
 			public class PlayerSanity
 			{
 
@@ -17,7 +18,7 @@ namespace Bitzophrenia
 					this.instance = withInstance;
 				}
 
-				public double getSanityLevel()
+				public double GetSanityLevel()
 				{
 					if (this.instance.field_Public_Single_0 <= -1)
 					{
@@ -28,14 +29,15 @@ namespace Bitzophrenia
 
 				public override string ToString()
 				{
-					var d = this.getSanityLevel();
+					var d = this.GetSanityLevel();
 					if (d == -1)
 					{
 						return "??";
 					}
 
-					return d.ToString();
+					return d.ToString() + "%";
 				}
+
 			}
 		}
 	}

@@ -9,7 +9,7 @@ namespace Bitzophrenia {
 
 			private string SceneName = null;
 
-			private bool hasMissionStarted = false;
+			private bool _hasMissionStarted = false;
 
 			private List<Bitzophrenia.IAction> onMissionStartActions = new List<Bitzophrenia.IAction>();
 
@@ -19,12 +19,15 @@ namespace Bitzophrenia {
 
 			private Bitzophrenia.Phasma.Controllers.Mission MissionController;
 
+			private Bitzophrenia.Phasma.Controllers.SpeechRecognition SpeechRecognitionController;
+
 			public void Reset() {
 				this.GameController = null;
 				this.LevelController = null;
 				this.MissionController = null;
+				this.SpeechRecognitionController = null;
 
-				this.hasMissionStarted = false;
+				this._hasMissionStarted = false;
 			}
 
 			public void SetCurrentScene(int sceneID, string sceneName) {
@@ -49,7 +52,7 @@ namespace Bitzophrenia {
 			}
 
 			public bool HasMissionStarted() {
-				return this.hasMissionStarted;
+				return this._hasMissionStarted;
 			}
 
 			public void AddOnMissionStartAction(Bitzophrenia.IAction action) {
@@ -60,7 +63,8 @@ namespace Bitzophrenia {
 				if (this.IsInLevel() && !this.HasMissionStarted()) {
 					var levelController = this.GetLevelController();
 					if (levelController != null && levelController.GetGhost() != null) {
-						this.hasMissionStarted = true;
+						this._hasMissionStarted = true;
+						MelonLoader.MelonLogger.Msg("_hasMissionStarted: " + this._hasMissionStarted);
 						foreach(var action in this.onMissionStartActions) {
 							try {
 								action.Execute();
@@ -86,12 +90,20 @@ namespace Bitzophrenia {
 				return this.LevelController;
 			}
 
-			public Bitzophrenia.Phasma.Controllers.Mission GetMissionlController() {
+			public Bitzophrenia.Phasma.Controllers.Mission GetMissionController() {
 				if (this.MissionController == null) {
 					global::MissionManager controller = global::MissionManager.field_Public_Static_MissionManager_0;
 					this.MissionController = controller == null ? null : new Bitzophrenia.Phasma.Controllers.Mission(controller);
 				}
 				return this.MissionController;
+			}
+
+			public Bitzophrenia.Phasma.Controllers.SpeechRecognition GetSpeechRecognitionController() {
+				if (this.SpeechRecognitionController == null) {
+					global::SpeechRecognitionController controller = global::SpeechRecognitionController.field_Public_Static_SpeechRecognitionController_0;
+					this.SpeechRecognitionController = controller == null ? null : new Bitzophrenia.Phasma.Controllers.SpeechRecognition(controller);
+				}
+				return this.SpeechRecognitionController;
 			}
 		}
 	}

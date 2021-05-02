@@ -9,12 +9,6 @@ namespace Bitzophrenia
 			public class Level
 			{
 
-				/// <summary>Phasma Level Controller instance.</summary>
-				private LevelController controller;
-
-				private Bitzophrenia.Phasma.Objects.Ghost ghost;
-
-
 				/// <summary>
 				/// Instantiates a new instance.
 				/// </summary>
@@ -22,6 +16,16 @@ namespace Bitzophrenia
 				public Level(LevelController withController)
 				{
 					this.controller = withController;
+				}
+
+
+				/// <summary>Phasma Level Controller instance.</summary>
+				private LevelController controller;
+
+				private Bitzophrenia.Phasma.Objects.Ghost ghost;
+
+				public LevelController GetController() {
+					return this.controller;
 				}
 
 				public Bitzophrenia.Phasma.Objects.Ghost GetGhost()
@@ -66,6 +70,28 @@ namespace Bitzophrenia
 					}
 					catch { }
 					return null;
+				}
+
+				public Bitzophrenia.Phasma.Objects.LevelRoom GetGhostsCurrentRoom() {
+					try {
+						return this.controller.field_Public_LevelRoom_0 == null ? null : new Bitzophrenia.Phasma.Objects.LevelRoom(this.controller.field_Public_LevelRoom_0);
+					} catch {}
+					return null;
+				}
+
+				public Bitzophrenia.Phasma.Objects.LevelRoom GetPlayersCurrentRoom() {
+					try {
+						return this.controller.field_Public_LevelRoom_1 == null ? null : new Bitzophrenia.Phasma.Objects.LevelRoom(this.controller.field_Public_LevelRoom_1);
+					} catch {}
+					return null;
+				}
+
+				public List<Bitzophrenia.Phasma.Objects.LevelRoom> ListAllRooms() {
+					var list = new List<Bitzophrenia.Phasma.Objects.LevelRoom>();
+					foreach (var room in this.controller.field_Public_ArrayOf_LevelRoom_0) {
+						list.Add(new Bitzophrenia.Phasma.Objects.LevelRoom(room));
+					}
+					return list;
 				}
 			}
 		}

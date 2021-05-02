@@ -34,7 +34,7 @@ namespace Bitzophrenia
 
 				public void ForceDropProbs()
 				{
-					this.instance.field_Public_PCPropGrab_0.DropAllInventoryProps();
+					this.instance.field_Public_PCPropGrab_0.Drop(false);
 				}
 
 				public Bitzophrenia.Phasma.Objects.PCFlashlight GetPCFlashlight()

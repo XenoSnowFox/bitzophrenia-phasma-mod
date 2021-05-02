@@ -85,7 +85,6 @@ namespace Bitzophrenia
 
 					return this.multiPlayerController;
 				}
-
 			}
 		}
 	}
