@@ -135,6 +135,7 @@
     <Compile Include="src\Actions\GhostName.cs" />
     <Compile Include="src\Actions\InvestigationCommencement.cs" />
     <Compile Include="src\Actions\KillCurrentPlayer.cs" />
+    <Compile Include="src\Actions\KillSpaceMonkey.cs" />
     <Compile Include="src\Actions\MissionObjectives.cs" />
     <Compile Include="src\Actions\PlayerSanity.cs" />
     <Compile Include="src\Actions\PlayRandomGhostSound.cs" />
