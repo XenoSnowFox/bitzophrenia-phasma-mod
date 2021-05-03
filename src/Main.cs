@@ -66,6 +66,7 @@ namespace Bitzophrenia
 			// this.ircActionFactory.Add("!fusebox", new Bitzophrenia.Actions.TurnOffFuseBox(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!ghost",  new Bitzophrenia.Actions.GhostName(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!hey", new Bitzophrenia.Actions.PlayRandomGhostSound(this.Phasmophobia, ircClient));
+			this.ircActionFactory.Add("!interact", new Bitzophrenia.Actions.GhostInteraction(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!objectives", new Bitzophrenia.Actions.MissionObjectives(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!sanity", new Bitzophrenia.Actions.PlayerSanity(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!torch", new Bitzophrenia.Actions.ToggleTorches(this.Phasmophobia, ircClient));
@@ -125,6 +126,11 @@ namespace Bitzophrenia
 					// NUMPAD 1
 					if (keyboard.numpad1Key.wasPressedThisFrame) {
 						this.HandleTwitchBitRedemption("", 500);
+					}
+
+					// NUMPAD 3
+					if (keyboard.numpad3Key.wasPressedThisFrame) {
+						this.HandleTwitchIRCMessage("", "!interact");
 					}
 				}
 			} catch {

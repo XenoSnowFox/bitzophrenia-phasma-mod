@@ -132,6 +132,7 @@
     <Compile Include="src\Actions\FlickerRandomLightSwitch.cs" />
     <Compile Include="src\Actions\GhostAppearence.cs" />
     <Compile Include="src\Actions\GhostDisappearence.cs" />
+    <Compile Include="src\Actions\GhostInteraction.cs" />
     <Compile Include="src\Actions\GhostName.cs" />
     <Compile Include="src\Actions\InvestigationCommencement.cs" />
     <Compile Include="src\Actions\KillCurrentPlayer.cs" />

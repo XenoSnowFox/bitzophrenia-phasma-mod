@@ -89,6 +89,15 @@ namespace Bitzophrenia
 					catch { }
 				}
 
+				public void Interact()
+				{
+					this.ghostAI.RandomEvent();
+					this.ghostAI.field_Public_GhostActivity_0?.Interact();
+					this.ghostAI.field_Public_GhostActivity_0?.InteractWithARandomDoor();
+					this.ghostAI.field_Public_GhostActivity_0?.InteractWithARandomProp();
+					this.ghostAI.field_Public_GhostActivity_0?.Interact();
+				}
+
 				public void Hunt() {
 					try {
 						this.ghostAI.field_Public_Boolean_0 = true;
