@@ -44,6 +44,7 @@ namespace Bitzophrenia
 			var pubSubClient = this.twitchController.GetPubSubClient();
 			if (pubSubClient != null) {
 				pubSubClient.AddOnChannelPointRedemptionDelegate(this.HandleTwitchChannelPointRedemption);
+				pubSubClient.AddOnBitRedemptionDelegate(this.HandleTwitchBitRedemption);
 			}
 
 			// set up the action factories
@@ -123,40 +124,6 @@ namespace Bitzophrenia
 					if (keyboard.numpad1Key.wasPressedThisFrame) {
 						this.HandleTwitchBitRedemption("", 500);
 					}
-
-					// NUMPAD 2
-					if (keyboard.numpad2Key.wasPressedThisFrame) {
-						this.HandleTwitchBitRedemption("", 100);
-					}
-
-					// NUMPAD 3
-					if (keyboard.numpad3Key.wasPressedThisFrame) {
-						// this.Phasmophobia.GetGameController()
-						// 		?.GetPlayer()
-						// 		?.GetSanityObject()
-						// 		?.Log();
-					}
-
-					// NUMPAD 7
-					if (keyboard.numpad7Key.wasPressedThisFrame) {
-						this.HandleTwitchBitRedemption("", 999);
-					}
-
-					// NUMPAD 8
-					if (keyboard.numpad3Key.wasPressedThisFrame) {
-						this.HandleTwitchIRCMessage("", "!flicker");
-					}
-
-					// // NUMPAD 9
-					// if (keyboard.numpad9Key.wasPressedThisFrame) {
-					// 	var sanity = this.Phasmophobia.GetGameController()
-					// 			.GetPlayer()
-					// 			.GetSanityObject()
-					// 			.GetInstance();
-					// 	//sanity.ChangeSanity(100);
-					// 	//sanity.UpdatePlayerSanity();
-					// 	sanity.NetworkedUpdatePlayerSanity(0);
-					// }
 				}
 			} catch {
 				MelonLogger.Error("Error in the `onUpdate` method");
