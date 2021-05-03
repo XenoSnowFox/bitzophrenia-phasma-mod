@@ -63,7 +63,7 @@ namespace Bitzophrenia
 			this.ircActionFactory.Add("!appear", new Bitzophrenia.Actions.GhostAppearence(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!drop", new Bitzophrenia.Actions.DropCurrentItem(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!flicker", new Bitzophrenia.Actions.FlickerRandomLightSwitch(this.Phasmophobia, ircClient, this.actionQueue));
-			this.ircActionFactory.Add("!fusebox", new Bitzophrenia.Actions.TurnOffFuseBox(this.Phasmophobia, ircClient));
+			// this.ircActionFactory.Add("!fusebox", new Bitzophrenia.Actions.TurnOffFuseBox(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!ghost",  new Bitzophrenia.Actions.GhostName(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!hey", new Bitzophrenia.Actions.PlayRandomGhostSound(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!objectives", new Bitzophrenia.Actions.MissionObjectives(this.Phasmophobia, ircClient));
