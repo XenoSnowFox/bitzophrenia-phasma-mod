@@ -1,67 +1,94 @@
 using MelonLoader;
+using System.Collections.Generic;
 using UnityEngine;
 using Object = Il2CppSystem.Object;
 using Boolean = Il2CppSystem.Boolean;
 using Int32 = Il2CppSystem.Int32;
 
 namespace Bitzophrenia {
-    namespace Phasma {
-        public class RPC {
+	namespace Phasma {
 
-            public static Object[] GetObject(int i, bool isTrue = true, int rangeMin = 0, int rangeMax = 0, bool rangeFirst = false, bool isPosition = false, Vector3 pos = new Vector3()) {
-                MelonLogger.Msg("getRPCObject");
-                Object[] obj = new Object[i];
-                if (i > 0)
-                {
-                    Boolean boolean = default(Boolean);
-                    if (!rangeFirst)
-                    {
-                        if (isTrue)
-                            boolean.m_value = true;
-                        else
-                            boolean.m_value = false;
-                        obj[0] = boolean.BoxIl2CppObject();
+		public class RPC {
 
-                        if (i == 2)
-                        {
-                            Int32 integer = default(Int32);
-                            integer.m_value = Random.Range(rangeMin, rangeMax);
-                            obj[1] = integer.BoxIl2CppObject();
-                        }
-                    }
-                    else
-                    {
-                        Int32 integer = default(Int32);
-                        integer.m_value = Random.Range(rangeMin, rangeMax);
-                        obj[0] = integer.BoxIl2CppObject();
-                    }
-                }
-                if (isPosition)
-                {
-                    Vector3 vector = default(Vector3);
-                    vector = pos;
-                    obj[0] = vector.BoxIl2CppObject();
-                }
+			public static RPCMethodAppender UsingPhotonView(Photon.Pun.PhotonView photonView) {
+				var executor = new RPC();
+				executor.photonView = photonView;
+				return new RPCMethodAppender(executor);
+			}
 
-                return obj;
-            }
+			private RPC() { }
 
-            public static Object[] getObjectEmf(int i, Vector3 pos, int type = 0)
-            {
-                MelonLogger.Msg("getRPCObjectEmf");
-                Object[] obj = new Object[i];
-                if (i > 0)
-                {
-                    Vector3 vector = default(Vector3);
-                    Int32 integer = default(Int32);
-                    vector = pos;
-                    integer.m_value = type;
+			public Photon.Pun.PhotonView photonView { get; set; }
 
-                    obj[0] = vector.BoxIl2CppObject();
-                    obj[1] = integer.BoxIl2CppObject();
-                }
-                return obj;
-            }
-        }
-    }
+			public string methodName { get; set; }
+
+			public Photon.Pun.RpcTarget rpcTarget { get; set; }
+
+			public Object[] parameters { get; set; }
+
+			public void Execute() {
+				this.photonView.RPC(this.methodName, this.rpcTarget, this.parameters);
+			}
+		}
+
+		public class RPCMethodAppender {
+
+			private RPC rpcExecutor;
+
+			public RPCMethodAppender(RPC withExecutor) {
+				this.rpcExecutor = withExecutor;
+			}
+
+			public RPCTargetAppender ExecuteMethod(string withMethodName) {
+				this.rpcExecutor.methodName = withMethodName;
+				return new RPCTargetAppender(this.rpcExecutor);
+			}
+		}
+
+		public class RPCTargetAppender {
+
+			private RPC rpcExecutor;
+
+			private List<Object> objectList = new List<Object>();
+
+			public RPCTargetAppender(RPC withExecutor) {
+				this.rpcExecutor = withExecutor;
+			}
+
+			public RPCTargetAppender WithParameter(bool withBoolean) {
+				Boolean boolean = default(Boolean);
+				boolean.m_value = withBoolean;
+				objectList.Add(boolean.BoxIl2CppObject());
+				return this;
+			}
+
+			public RPCTargetAppender WithParameter(int withInteger) {
+				Int32 integer = default(Int32);
+				integer.m_value = Random.Range(withInteger, withInteger);
+				objectList.Add(integer.BoxIl2CppObject());
+				return this;
+			}
+
+			public RPCTargetAppender WithParameter(Vector3 withVector3) {
+				Vector3 vector = default(Vector3);
+				vector = withVector3;
+				objectList.Add(vector.BoxIl2CppObject());
+				return this;
+			}
+
+			public void OnAllTargets() {
+				this.OnTarget(Photon.Pun.RpcTarget.All);
+			}
+
+			public void OnOtherTargets() {
+				this.OnTarget(Photon.Pun.RpcTarget.Others);
+			}
+
+			public void OnTarget(Photon.Pun.RpcTarget withRPCTarget) {
+				this.rpcExecutor.rpcTarget = withRPCTarget;
+				this.rpcExecutor.parameters = objectList.ToArray();
+				this.rpcExecutor.Execute();
+			}
+		}
+	}
 }

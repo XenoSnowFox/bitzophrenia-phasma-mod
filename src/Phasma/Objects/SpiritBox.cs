@@ -45,8 +45,11 @@ namespace Bitzophrenia
 					this.instance.field_Public_AudioSource_0.PlayOneShot(clips[rndClipIndex]); // on ground
 					this.instance.field_Public_AudioSource_1.PlayOneShot(clips[rndClipIndex]); // being held
 
-					Photon.Pun.PhotonView photonView = this.instance.view;
-					photonView.RPC(command, Photon.Pun.RpcTarget.All, Bitzophrenia.Phasma.RPC.GetObject(2, true, rndClipIndex, rndClipIndex));
+					RPC.UsingPhotonView(this.instance.view)
+							.ExecuteMethod(command)
+							.WithParameter(true)
+							.WithParameter(rndClipIndex)
+							.OnAllTargets();
 				}
 
 			}

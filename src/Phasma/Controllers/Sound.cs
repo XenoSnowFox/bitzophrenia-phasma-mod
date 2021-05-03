@@ -24,7 +24,9 @@ namespace Bitzophrenia
 				{
 					try
 					{
-						this.controller.view.RPC("PlayDoorKnockingSound", Photon.Pun.RpcTarget.All, Bitzophrenia.Phasma.RPC.GetObject(0, false));
+						RPC.UsingPhotonView(this.controller.view)
+								.ExecuteMethod("PlayDoorKnockingSound")
+								.OnAllTargets();
 					}
 					catch { }
 				}

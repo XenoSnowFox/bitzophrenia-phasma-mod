@@ -63,6 +63,7 @@ namespace Bitzophrenia
 			this.ircActionFactory.Add("!appear", new Bitzophrenia.Actions.GhostAppearence(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!drop", new Bitzophrenia.Actions.DropCurrentItem(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!flicker", new Bitzophrenia.Actions.FlickerRandomLightSwitch(this.Phasmophobia, ircClient, this.actionQueue));
+			// this.ircActionFactory.Add("!fusebox", new Bitzophrenia.Actions.TurnOffFuseBox(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!ghost",  new Bitzophrenia.Actions.GhostName(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!hey", new Bitzophrenia.Actions.PlayRandomGhostSound(this.Phasmophobia, ircClient));
 			this.ircActionFactory.Add("!objectives", new Bitzophrenia.Actions.MissionObjectives(this.Phasmophobia, ircClient));
@@ -70,6 +71,7 @@ namespace Bitzophrenia
 			this.ircActionFactory.Add("!torch", new Bitzophrenia.Actions.ToggleTorches(this.Phasmophobia, ircClient));
 
 			// load BIT commands
+			this.bitRedemptionFactory.Add(50, new Bitzophrenia.Actions.TurnOffFuseBox(this.Phasmophobia, ircClient));
 			this.bitRedemptionFactory.Add(500, new Bitzophrenia.Actions.StartGhostHunt(this.Phasmophobia, ircClient, this.actionQueue));
 			this.bitRedemptionFactory.Add(666, new Bitzophrenia.Actions.KillCurrentPlayer(this.Phasmophobia, ircClient));
 			this.bitRedemptionFactory.Add(999, new Bitzophrenia.Actions.KillSpaceMonkey(this.Phasmophobia, ircClient));

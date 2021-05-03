@@ -143,6 +143,7 @@
     <Compile Include="src\Actions\StopGhostHunt.cs" />
     <Compile Include="src\Actions\ToggleSpecificLightSwitch.cs" />
     <Compile Include="src\Actions\ToggleTorches.cs" />
+    <Compile Include="src\Actions\TurnOffFuseBox.cs" />
 
     <Compile Include="src\Factories\TwitchIRCActionFactory.cs" />
     <Compile Include="src\Factories\TwitchChannelPointRedemptionActionFactory.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="src\Phasma\Controllers\Sound.cs" />
     <Compile Include="src\Phasma\Controllers\SpeechRecognition.cs" />
     <Compile Include="src\Phasma\Objects\Door.cs" />
+    <Compile Include="src\Phasma\Objects\FuseBox.cs" />
     <Compile Include="src\Phasma\Objects\Ghost.cs" />
     <Compile Include="src\Phasma\Objects\LevelRoom.cs" />
     <Compile Include="src\Phasma\Objects\LightSwitch.cs" />

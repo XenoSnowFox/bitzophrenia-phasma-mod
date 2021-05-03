@@ -65,8 +65,11 @@ namespace Bitzophrenia
 
 				public void Appear() {
 					try {
-						Photon.Pun.PhotonView photonView = this.ghostAI.field_Public_PhotonView_0;
-            			photonView.RPC("MakeGhostAppear", Photon.Pun.RpcTarget.All, Bitzophrenia.Phasma.RPC.GetObject(2, true, 1, 1));
+						RPC.UsingPhotonView(this.ghostAI.field_Public_PhotonView_0)
+								.ExecuteMethod("MakeGhostAppear")
+								.WithParameter(true)
+								.WithParameter(1)
+								.OnAllTargets();
 						this.ghostAI.Appear(true);
 						this.ghostAI.MakeGhostAppear(true, 1);
 					}
@@ -75,8 +78,11 @@ namespace Bitzophrenia
 
 				public void Disappear() {
 					try {
-						Photon.Pun.PhotonView photonView = this.ghostAI.field_Public_PhotonView_0;
-            			photonView.RPC("MakeGhostAppear", Photon.Pun.RpcTarget.All, Bitzophrenia.Phasma.RPC.GetObject(2, false, 0, 1));
+						RPC.UsingPhotonView( this.ghostAI.field_Public_PhotonView_0)
+								.ExecuteMethod("MakeGhostAppear")
+								.WithParameter(false)
+								.WithParameter(0)
+								.OnAllTargets();
 						this.ghostAI.UnAppear(true);
 						this.ghostAI.MakeGhostAppear(false, 1);
 					}
@@ -103,9 +109,14 @@ namespace Bitzophrenia
 						this.ghostAI.field_Public_GhostInteraction_0.CreateAppearedEMF(this.ghostAI.transform.position);
 						this.ghostAI.Appear(true);
 
-						Photon.Pun.PhotonView photonView = this.ghostAI.field_Public_PhotonView_0;
-						photonView.RPC("Hunting", Photon.Pun.RpcTarget.All, Bitzophrenia.Phasma.RPC.GetObject(1, true));
-						photonView.RPC("SyncChasingPlayer", Photon.Pun.RpcTarget.All, Bitzophrenia.Phasma.RPC.GetObject(1, true));
+						RPC.UsingPhotonView(this.ghostAI.field_Public_PhotonView_0)
+								.ExecuteMethod("Hunting")
+								.WithParameter(true)
+								.OnAllTargets();
+						RPC.UsingPhotonView(this.ghostAI.field_Public_PhotonView_0)
+								.ExecuteMethod("SyncChasingPlayer")
+								.WithParameter(true)
+								.OnAllTargets();
 					}
 					catch { }
 				}
@@ -122,9 +133,17 @@ namespace Bitzophrenia
 						this.ghostAI.UnAppear(false);
 						this.ghostAI.ChangeState(GhostAI.EnumNPublicSealedvaidwahufalidothfuapUnique.idle, null, null);
 
-						Photon.Pun.PhotonView photonView = this.ghostAI.field_Public_PhotonView_0;
-						photonView.RPC("Hunting", Photon.Pun.RpcTarget.All, Bitzophrenia.Phasma.RPC.GetObject(1, false));
-						photonView.RPC("SyncChasingPlayer", Photon.Pun.RpcTarget.All, Bitzophrenia.Phasma.RPC.GetObject(1, false));
+
+						RPC.UsingPhotonView(this.ghostAI.field_Public_PhotonView_0)
+								.ExecuteMethod("Hunting")
+								.WithParameter(false)
+								.OnAllTargets();
+
+						RPC.UsingPhotonView(this.ghostAI.field_Public_PhotonView_0)
+								.ExecuteMethod("SyncChasingPlayer")
+								.WithParameter(false)
+								.OnAllTargets();
+
 					}
 					catch { }
 				}
