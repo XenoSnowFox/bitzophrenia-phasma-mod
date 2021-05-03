@@ -93,6 +93,14 @@ namespace Bitzophrenia
 					}
 					return list;
 				}
+
+				public Bitzophrenia.Phasma.Objects.FuseBox GetFuseBox() {
+					if (this.controller.field_Public_FuseBox_0 == null) {
+						return null;
+					}
+
+					return new Bitzophrenia.Phasma.Objects.FuseBox(this.controller.field_Public_FuseBox_0);
+				}
 			}
 		}
 	}
