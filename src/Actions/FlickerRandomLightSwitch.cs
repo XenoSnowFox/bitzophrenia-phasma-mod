@@ -14,7 +14,7 @@ namespace Bitzophrenia
 
 			private Queue<Bitzophrenia.IAction> actionQueue;
 
-			private int currentlyFlickering = 0;
+			private bool currentlyFlickering = false;
 
 			public FlickerRandomLightSwitch(Bitzophrenia.Phasma.Global phasmophobia, Bitzophrenia.Twitch.TwitchIRCClient withIRCClient, Queue<Bitzophrenia.IAction> withActionQueue)
 					: base("Flicker a randomly selected light switch.", phasmophobia)
@@ -36,12 +36,12 @@ namespace Bitzophrenia
 				// check if the fuse box is switched on
 
 				// add a limit to the number of lights that can flicker
-				if (currentlyFlickering > 1) {
+				if (currentlyFlickering) {
 					this.ircClient.SendPrivateMessage("Too many lights are already being flickered.");
 					return;
 				}
 
-				this.currentlyFlickering += 1;
+				this.currentlyFlickering = true;
 
 				// find a light swtich
 				var lightSwitchList = new List<Bitzophrenia.Phasma.Objects.LightSwitch>();
@@ -71,7 +71,7 @@ namespace Bitzophrenia
 					// reset light to either on/off
 					withLightSwitch.Use(initialState);
 
-					this.currentlyFlickering -= 1;
+					this.currentlyFlickering = false;
 				}).Start();
 			}
 		}
