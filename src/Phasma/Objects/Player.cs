@@ -28,7 +28,7 @@ namespace Bitzophrenia
 
 				public void Kill()
 				{
-					this.instance.StartKillingPlayerNetworked();
+					// this.instance.StartKillingPlayerNetworked();
 					this.instance.StartKillingPlayer();
 				}
 
